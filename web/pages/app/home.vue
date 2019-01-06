@@ -3,33 +3,116 @@
         <div class="container">
             <div class="text-center page-header">
                 <h1 class="xlsx-koa">xlsx-koa</h1>
-                <p>vue koa 应用脚手架</p>
+                <p>vue koa 应用</p>
+            </div>
+            <div class="upload">
+                <file-upload
+                    :drop="true"
+                    ref="upload"
+                    v-model="files"
+                    :accept="accept"
+                    :size="size || 0"
+                    :multiple="multiple"
+                    post-action="/api/upload"
+                    @input-file="inputFile"
+                    @input-filter="inputFilter"
+                >
+                    选择文件
+                </file-upload>
             </div>
         </div>
+        <p class="upload-tips" v-show="$refs.upload && $refs.upload.dropActive">
+            拖拽到此处上传文件
+        </p>
         <back-to-top></back-to-top>
     </div>
 </template>
 <script>
+    import FileUpload from 'vue-upload-component';
     import backToTop from '../../components/back-to-top';
+
     export default {
         data() {
             return {
-                list: ''
-            }
+                files: [],
+                minSize: 1024,
+                multiple: true,
+                size: 1024 * 1024 * 10,
+                accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            };
         },
         methods: {
+            /**
+             * Has changed
+             * @param  Object|undefined   newFile   Read only
+             * @param  Object|undefined   oldFile   Read only
+             * @return undefined
+             */
+            inputFile: function (newFile, oldFile) {
+                console.log(newFile);
+                if (newFile && oldFile) {
+                    // update
 
-        },
-        mounted() {
-            this.$http.post('/api/upload').then(response => {
-                console.log(response);
-                this.list = response.data.list
-            }, response => {
-                console.log(response);
-            });
+                    if (newFile.active && !oldFile.active) {
+                        // beforeSend
+                        // min size
+                    if (newFile.size >= 0 && this.minSize > 0 && newFile.size < this.minSize) {
+                        this.$refs.upload.update(newFile, { error: 'size' })
+                    }
+                    }
+                    if (newFile.progress !== oldFile.progress) {
+                        // progress
+                    }
+                    if (newFile.error && !oldFile.error) {
+                        // error
+                    }
+                    if (newFile.success && !oldFile.success) {
+                        // success
+                    }
+                }
+                if (!newFile && oldFile) {
+                    // remove
+                    if (oldFile.success && oldFile.response.id) {
+                    // $.ajax({
+                    //   type: 'DELETE',
+                    //   url: '/upload/delete?id=' + oldFile.response.id,
+                    // })
+                    }
+                }
+                // Automatically activate upload
+                if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
+                    if (this.uploadAuto && !this.$refs.upload.active) {
+                        this.$refs.upload.active = true;
+                    }
+                }
+            },
+            /**
+             * Pretreatment
+             * @param  Object|undefined   newFile   Read and write
+             * @param  Object|undefined   oldFile   Read only
+             * @param  Function           prevent   Prevent changing
+             * @return undefined
+             */
+            inputFilter: function (newFile, oldFile, prevent) {
+                if (newFile && !oldFile) {
+                    // Filter non-excel file
+                    if (!/\.(xlsx|xls|csv)$/i.test(newFile.name)) {
+                        return prevent();
+                    }
+                }
+
+                // Create a blob field
+                newFile.blob = '';
+                let URL = window.URL || window.webkitURL;
+
+                if (URL && URL.createObjectURL) {
+                    newFile.blob = URL.createObjectURL(newFile.file);
+                }
+            }
         },
         components:{
-            backToTop
+            backToTop,
+            FileUpload,
         }
     }
 </script>
@@ -43,6 +126,54 @@
         height: 76px;
         line-height: 76px;
         text-align: center;
+    }
+
+    .upload {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        height: 150px;
+        margin: 0 auto;
+        border-radius: 5px;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #dddddd;
+
+        &.drop-active {
+            border-color: rgb(41, 154, 230);
+        }
+
+        .file-uploads {
+            display: flex;
+            width: 180px;
+            height: 40px;
+            color: #fff;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3px;
+            background-color: rgb(41, 154, 230);
+
+            &:hover {
+                background-color: rgba(41, 154, 230, .8);
+            }
+        }
+    }
+
+    .upload-tips {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: 0;
+        position: fixed;
+        display: flex;
+        z-index: 9999;
+        color: #f2f2f2;
+        font-size: 16px;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, .5);
     }
 
     .lang {

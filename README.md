@@ -6,11 +6,11 @@
 
 ### 前端
 
-* `样式`:scss.
-* `库管理`:npm,bower
-* `框架`:vue2.
-* `模板引擎`:handlebars4.
-* `打包`:webpack4
+* `样式`: scss.
+* `库管理`: npm,bower
+* `框架`: vue2.
+* `模板引擎`: handlebars4.
+* `打包`: webpack4
 
 ### 中台
 
@@ -431,6 +431,7 @@ apiServer : 'http://localhost:3334'
 * ```/web/mock/index.js```
 
 ```javascript
+
 Mock.mock('/api/list', 'post', function () {
     return Mock.mock({
         "list|1-10": [{
@@ -441,6 +442,7 @@ Mock.mock('/api/list', 'post', function () {
         ]
     });
 });
+
 ```
 
 **优先级:前端Mock文件>后端Mock文件.否则报500.**
@@ -450,8 +452,9 @@ Mock.mock('/api/list', 'post', function () {
 * ```/config.yml```
 
 ```yml
+
 ...
-#webpack构建路径(prod模式有效)
+# webpack构建路径(prod模式有效)
 buildPath:
     # name entry路径
     # isIndexEntry 是否使用index.js作为webpack.entry.
@@ -468,6 +471,7 @@ buildPath:
      -
        name: './web/locale'
 ...
+
 ```
 
 一般情况每一个应用都建立在 `/web/pages/**/index.js`,以`index.js`作为打包入口.
