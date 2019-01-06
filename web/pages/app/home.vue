@@ -1,16 +1,8 @@
 <template>
     <div id="home-app">
-        <header class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand hidden-sm" target="_blank"
-                       href="https://github.com/chachaxw/xlsx-koa">xlsx-koa</a>
-                </div>
-            </div>
-        </header>
         <div class="container">
             <div class="text-center page-header">
-                <h1 class="mall-app">xlsx-koa</h1>
+                <h1 class="xlsx-koa">xlsx-koa</h1>
                 <p>vue koa 应用脚手架</p>
             </div>
         </div>
@@ -29,7 +21,7 @@
 
         },
         mounted() {
-            this.$http.post('/api/list').then(response => {
+            this.$http.post('/api/upload').then(response => {
                 console.log(response);
                 this.list = response.data.list
             }, response => {
@@ -46,10 +38,11 @@
         margin: 80px 0 20px;
     }
 
-    .mall-app {
+    .xlsx-koa {
         font-size: 50px;
         height: 76px;
         line-height: 76px;
+        text-align: center;
     }
 
     .lang {

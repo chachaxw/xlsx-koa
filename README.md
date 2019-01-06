@@ -114,13 +114,12 @@ module.exports.default = module.exports = {
 
 默认值:'',开发模式下不会加载生产后的css,**parseUrl**有解释.
 
-
-
 ### 3.新建应用视图
 
-- ```/server/view/pages/home.hbs```
+```/server/view/pages/home.hbs```
 
 ```handlebars
+
 {{#extend "layout-default"}}          # 使用layout-default布局
     {{#content "head"}}
         {{{parseUrl 'app.css'}}} # app应用的css,直接引用
@@ -130,6 +129,7 @@ module.exports.default = module.exports = {
         {{{parseUrl 'app.js'}}}  # app应用的js(相应webpack.entry)
     {{/content}}
 {{/extend}}
+
 ```
 
 `/server/view/layout/**.hbs` 以文件名注册为`handlebars partial`.
@@ -147,30 +147,38 @@ module.exports.default = module.exports = {
 **dev**
 
 `ctx.state.appName='app'`
+
 ```javascript
+
 {{{parseUrl 'app.css' 'app.js'}}}
 ```
+
 ↓↓↓
+
 ```html
+
 <script web="app.js"></script>
 ```
 
-`ctx.state.appName=''; 或不设置`   
+`ctx.state.appName=''; 或不设置`
 
 ↓↓↓
+
 ```html
+
 <link href="/dist/static/css/app.[chunkhash].css" type="text/css" rel="stylesheet">
 <script web="app.js"></script>
 ```
 
 **prod**
+
 ```html
+
 <link href="/dist/static/css/app.[chunkhash].css" type="text/css" rel="stylesheet">
 <script web="/dist/static/js/app.[chunkhash].js"></script>
 ```
 
 如果没有build过,dev模式不会加载app.css,只加载app.js.即使加载build过的css也不影响dev模式下的样式应用.
-
 
 ### 4.新建应用页面
 
@@ -197,6 +205,7 @@ module.exports.default = module.exports = {
 </script>
 ...
 ```
+
 ### 5.新建应用入口
 
 * ```/web/pages/app/index.js```
@@ -209,16 +218,18 @@ new Vue({
     components: {homeApp}
 });
 ```
+
 **浏览: http://localhost:3333/**
 
-
 ## 配置文件
+
 * ```/webpack.entry.conf.js```
 
 **任何模式都引用的配置文件**
 
-**作为全局通用的入口文件,处在不同位置.在开发,生产模式webapck构建时自动合并引入webpack.entry.(不做其他属性合并).一般情况不作修改.**
+** 作为全局通用的入口文件,处在不同位置.在开发,生产模式webapck构建时自动合并引入webpack.entry.(不做其他属性合并).一般情况不作修改.**
 ```javascript
+
 module.exports ={
     header: './web/entry/header.js', //全局头部通用文件(引用vue,全局样式...)
     footer: './web/entry/footer.js', //全局底部通用文件(比如统计数据...)
@@ -261,6 +272,7 @@ entry: {
     ]
 }
 ```
+
 `webpack-hot-client/client(hot-reload)`: 开发模式时每个入口自动加入.
 
 * ```/webpack.prod.conf.js```
@@ -291,12 +303,13 @@ entry: {
 `/web/pages/**/index.js` 都是app. 这里,`app`, `app2` 2个app,甚至更多,即多页应用.
 
 `app`, `app2`,分别叫主app,其他app,还可以有另外app...等. 名字随你.
- 
- **项目只保留1个app,多app需另建.**
+
+**项目只保留1个app,多app需另建.**
 
 ## 多语言方案(locales)
 
 ### 1.配置参数
+
 * ```/config.yml```
 
 ```yml
@@ -314,6 +327,7 @@ buildPath:
 **缺一不可**
 
 ### 2.创建多语言文件
+
 * `/web/locale/zh.js`
 
 ```javascript
@@ -333,11 +347,12 @@ window.locale = {
 多语言文件会在`header.js`之前插入.
 
 ### 3.创建全局方法
+
 * `/web/utils/locale.js`
 
 ```javascript
 /**
- * 获取locale对应的值 
+ * 获取locale对应的值
  */
 window.getLocale = function (key) {
     if (window.locale) {
@@ -364,13 +379,14 @@ data() {
 
 路由则支持
 
-*  http://localhost:3333/
-*  http://localhost:3333/zh/
-*  http://localhost:3333/en/
+* http://localhost:3333/
+* http://localhost:3333/zh/
+* http://localhost:3333/en/
 
 ## mock
 
 * ```/config.yml```
+
 ```yml
 ...
 # 是否使用模拟数据api(dev模式有效)
@@ -394,7 +410,7 @@ apiServer : 'http://localhost:3334'
 
 ### 1.服务端Mock
 
-#### 1.1 编写/server/mock/**/.json文件.
+#### 1.1 编写/server/mock/**/.json文件
 
 * ```/server/mock/api/list.json```
 
@@ -410,9 +426,9 @@ apiServer : 'http://localhost:3334'
 
 ### 2.前端Mock
 
-#### 2.1 编写/web/mock/**/index.js文件.
+#### 2.1 编写/web/mock/**/index.js文件
 
-* ```/web/mock/index.js``` 
+* ```/web/mock/index.js```
 
 ```javascript
 Mock.mock('/api/list', 'post', function () {
@@ -426,6 +442,7 @@ Mock.mock('/api/list', 'post', function () {
     });
 });
 ```
+
 **优先级:前端Mock文件>后端Mock文件.否则报500.**
 
 ## 打包
@@ -459,14 +476,12 @@ buildPath:
 
 所以,`/web/pages/**`,只要目录不重名,并且以`index.js`作为入口.就不会冲突.
 
-
 **dev**
 
-从这些配置文件打包 `/webpack.base.conf` , `/webpack.entry.conf.js` , `/webpack.dev.conf.js`    
+从这些配置文件打包 `/webpack.base.conf` , `/webpack.entry.conf.js` , `/webpack.dev.conf.js`
 **主要从`/webpack.dev.conf.js`配置打包开发需要的entry.**
 
 **prod**
 
 从这些配置文件打包 `/webpack.base.conf` , ` /webpack.entry.conf.js` , `/webpack.prod.conf` , `/web/pages/**/index.js`    
 **主要从`/web/pages/**/index.js`打包所有js.**
-
