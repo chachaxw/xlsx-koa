@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { createProduct } from '../api/index';
 import { strToUnderscored, objFormat } from '../lib/utils/uitls';
 
+const subprocess = fork('./common/koasub.js');
 const testCsv = path.resolve(__dirname, '../template/template.csv');
 
 const readCSV = (csv) => {
@@ -88,6 +89,9 @@ const uploadFile = async (ctx, file) => {
             ctx.response.body = Buffer(data);
             resolve();
         };
+
+        subprocess.on('message', cb);
+        subprocess.send(['get data', file]);
     });
 };
 
