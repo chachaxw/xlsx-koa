@@ -2,7 +2,8 @@ import XLSX from 'xlsx';
 import path from 'path';
 import { fork } from 'child_process';
 import _ from 'lodash';
-import { strToUnderscored } from '../lib/utils/uitls';
+import { createProduct } from '../api/index';
+import { strToUnderscored, objFormat } from '../lib/utils/uitls';
 
 const testCsv = path.resolve(__dirname, '../template/template.csv');
 
@@ -38,44 +39,38 @@ const readCSV = (csv) => {
         }
 
         rows = _.map(rows, (item) => {
-            return {
-                id: _.get(item, 'id'),
-                handle: _.get(item, 'handle'),
-                declare_name_cn: _.get(item, 'title'),
-                declare_name_en: _.get(item, 'product_name_en'),
-                feature: _.get(item, 'body_html'),
-                character_ids: _.get(item, 'character_ids'),
-                special_remarks: _.get(item, 'special_remarks', ''),
-                buy_url: _.get(item, 'buy_url'),
-                category_id: _.get(item, 'category_id'),
-                image_path: _.get(item, 'variant_image'),
-                product_weight: _.get(item, 'product_weight'),
-                actual_weight: _.get(item, 'actual_weight'),
-                sales_weight: _.get(item, 'sales_weight'),
-                package_num: _.get(item, 'package_num'),
-                package_length: _.get(item, 'package_length'),
-                package_width: _.get(item, 'package_width'),
-                package_height: _.get(item, 'package_height'),
-                product_name_en: _.get(item, 'product_name_en'),
-                currency_code: _.get(item, 'currency_code'),
-                sale_price_base: _.get(item, 'sale_price_base'),
-                price_limit: _.get(item, 'price_limit', []),
-                display_alone: _.get(item, 'display_alone'),
-                delivery_average_day: _.get(item, 'delivery_average_day'),
-                is_edit_same_price: _.get(item, 'is_edit_same_price'),
-                custom_size_data: _.get(item, 'custom_size_data', []),
-                size_chart_template_id: _.get(item, 'size_chart_template_id'),
-                standard_size_chart_id: _.get(item, 'standard_size_chart_id'),
-            };
+            return objFormat(item);
         });
 
-        const data = _.chain(rows).groupBy('handle').value();
+        const data = _.chain(rows).groupBy('handle').toPairs().map(o => {
+            return _.zipObject(_.zip(['handle', 'specs']), o);
+        }).map(item => {
+            const obj = item.specs[0];
+            return {
+                declare_name_cn: _.get(obj, 'title'),
+                declare_name_en: _.get(obj, 'product_name_en'),
+                feature: _.get(obj, 'feature'),
+                character_ids: _.get(obj, 'character_ids'),
+                special_remarks: _.get(obj, 'special_remarks', ''),
+                buy_url: _.get(obj, 'buy_url'),
+                category_id: _.get(obj, 'category_id'),
+                image_path: _.get(obj, 'variant_image'),
+                specs: item.specs,
+                has_chinese: _.get(obj, 'has_chinese', 0),
+                from_platform: _.get(obj, 'from_platform', ''),
+                method: _.get(obj, 'method', ''),
+                charger_spec: _.get(obj, 'charger_spec', 1),
+                product_source: _.get(obj, 'product_source', 0),
+                product_label: _.get(obj, 'product_label', ''),
+                recommend_level: _.get(obj, 'recommend_level', 'o'),
+                supplier_sn: _.get(obj, 'supplier_sn', ''),
+            };
+        }).value();
 
         console.log('--- Excel Data ---', data);
+        return data;
     });
 };
-
-readCSV(testCsv);
 
 const pageHome = async (ctx) => {
     const locals = {
@@ -87,7 +82,7 @@ const pageHome = async (ctx) => {
     await ctx.render('pages/home', locals);
 };
 
-const getFile = async (ctx, file) => {
+const uploadFile = async (ctx, file) => {
     await new Promise((resolve, reject) => {
         const cb = (data) => {
             ctx.response.body = Buffer(data);
@@ -98,5 +93,5 @@ const getFile = async (ctx, file) => {
 
 module.exports.default = module.exports = {
     pageHome,
-    getFile
+    uploadFile,
 };
