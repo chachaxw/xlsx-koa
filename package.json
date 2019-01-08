@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
+    "formidable": "^1.2.1",
     "handlebars": "^4.0.12",
     "handlebars-layouts": "^3.1.4",
     "js-yaml": "^3.12.0",

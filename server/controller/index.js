@@ -5,8 +5,9 @@ import _ from 'lodash';
 import { createProduct } from '../api/index';
 import { strToUnderscored, objFormat } from '../lib/utils/uitls';
 
-const subprocess = fork('./common/koasub.js');
+const koasub = path.resolve(__dirname, './common/koasub.js');
 const testCsv = path.resolve(__dirname, '../template/template.csv');
+const subprocess = fork(koasub);
 
 const readCSV = (csv) => {
     const wb = XLSX.readFile(csv);
@@ -68,7 +69,7 @@ const readCSV = (csv) => {
             };
         }).value();
 
-        console.log('--- Excel Data ---', data);
+        // console.log('--- Excel Data ---', data);
         return data;
     });
 };
@@ -83,16 +84,8 @@ const pageHome = async (ctx) => {
     await ctx.render('pages/home', locals);
 };
 
-const uploadFile = async (ctx, file) => {
-    await new Promise((resolve, reject) => {
-        const cb = (data) => {
-            ctx.response.body = Buffer(data);
-            resolve();
-        };
-
-        subprocess.on('message', cb);
-        subprocess.send(['get data', file]);
-    });
+const uploadFile = async (ctx) => {
+    console.log('Ctx', ctx.req);
 };
 
 module.exports.default = module.exports = {

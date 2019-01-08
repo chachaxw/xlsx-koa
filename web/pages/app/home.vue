@@ -12,6 +12,8 @@
                     v-model="files"
                     :accept="accept"
                     :size="size || 0"
+                    :thread="thread"
+                    :maximum="maximum"
                     :multiple="multiple"
                     post-action="/api/upload"
                     @input-file="inputFile"
@@ -20,6 +22,11 @@
                     选择文件
                 </file-upload>
             </div>
+            <ul class="file-list">
+                <li v-for="file in files">
+                    {{file.name}} - Error: {{file.error}}, Success: {{file.success}}
+                </li>
+            </ul>
         </div>
         <p class="upload-tips" v-show="$refs.upload && $refs.upload.dropActive">
             拖拽到此处上传文件
@@ -35,6 +42,8 @@
         data() {
             return {
                 files: [],
+                thread: 3,
+                maximum: 10,
                 minSize: 1024,
                 multiple: true,
                 size: 1024 * 1024 * 10,
@@ -49,16 +58,15 @@
              * @return undefined
              */
             inputFile: function (newFile, oldFile) {
-                console.log(newFile);
                 if (newFile && oldFile) {
                     // update
 
                     if (newFile.active && !oldFile.active) {
                         // beforeSend
                         // min size
-                    if (newFile.size >= 0 && this.minSize > 0 && newFile.size < this.minSize) {
-                        this.$refs.upload.update(newFile, { error: 'size' })
-                    }
+                        if (newFile.size >= 0 && this.minSize > 0 && newFile.size < this.minSize) {
+                            this.$refs.upload.update(newFile, { error: 'size' })
+                        }
                     }
                     if (newFile.progress !== oldFile.progress) {
                         // progress
@@ -70,6 +78,7 @@
                         // success
                     }
                 }
+
                 if (!newFile && oldFile) {
                     // remove
                     if (oldFile.success && oldFile.response.id) {
@@ -79,12 +88,17 @@
                     // })
                     }
                 }
+
                 // Automatically activate upload
                 if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
                     if (this.uploadAuto && !this.$refs.upload.active) {
+                        console.log('Upload File');
                         this.$refs.upload.active = true;
                     }
                 }
+
+                console.log('Upload File', newFile);
+                this.$refs.upload.active = true;
             },
             /**
              * Pretreatment
@@ -132,7 +146,7 @@
         display: flex;
         flex-direction: column;
         width: 50%;
-        height: 150px;
+        height: 120px;
         margin: 0 auto;
         border-radius: 5px;
         align-items: center;
@@ -178,5 +192,17 @@
 
     .lang {
         font-size: 30px;
+    }
+
+    .file-list {
+        text-align: center;
+        margin: 20px auto;
+
+        li {
+            background-color: #f2f2f2;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 5px;
+        }
     }
 </style>
