@@ -1,16 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { IncomingForm } from 'formidable';
-import _ from 'lodash';
+import readFile from './common/readFile';
 import { createProduct } from '../api/index';
-import { readFile } from './common/readFile';
-
-const form = new IncomingForm({
-    multiples: true,
-    keepExtensions: true,
-    maxFileSize: 10 * 1024 * 1024,
-    uploadDir: path.resolve(__dirname, '../template'),
-});
 
 const pageHome = async (ctx) => {
     const locals = {
@@ -23,19 +15,25 @@ const pageHome = async (ctx) => {
 };
 
 const uploadFile = async (ctx) => {
-    form.parse(ctx.req, (err, fields, files) => {
-        console.log('Files', files);
+    const form = new IncomingForm({
+        multiples: true,
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024,
+        uploadDir: path.resolve(__dirname, '../../public/temp'),
+    });
 
+    form.parse(ctx.req, (err, fields, files) => {
+        console.log('Files', fields, files);
         if (err) {
-            ctx.treow(400, err);
-        } else {
-            ctx.status = 200;
-            ctx.body = {
-                status: 200,
-                errMsg: 'File Uploaded!',
-            };
+            ctx.throw(400, err);
         }
     });
+
+    ctx.status = 200;
+    ctx.body = {
+        status: 200,
+        errMsg: 'File Uploaded!',
+    };
 };
 
 module.exports.default = module.exports = {

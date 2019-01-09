@@ -12,8 +12,9 @@ import '../styles/index.scss';
 // if (APPSTATE.isMockAPI) {
 //     require('../mock');
 // }
+
 import * as filters from '../filters';
 
 Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key]);
 });

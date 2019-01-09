@@ -23,7 +23,14 @@
             </div>
             <ul class="file-list">
                 <li v-for="file in files">
-                    {{file.name}} - {{file.error && `Error: ${file.error}`}}, Success: {{file.success}}
+                    <div class="progress" :style="{
+                        width: file.progress + '%',
+                        backgroundColor: file.success ? '#1b94f7' : '#FF3B30',
+                    }"></div>
+                    <div class="file-info">
+                        {{file.name}} - {{file.progress + '%'}}
+                        {{file.error && `Error: ${file.error}`}}
+                    </div>
                 </li>
             </ul>
         </div>
@@ -92,7 +99,7 @@
                 // Automatically activate upload
                 if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
                     if (this.uploadAuto && !this.$refs.upload.active) {
-                        console.log('Upload File');
+                        console.log('Upload File', newFile);
                         this.$refs.upload.active = true;
                     }
                 }
@@ -192,14 +199,34 @@
     }
 
     .file-list {
+        width: 50%;
         text-align: center;
         margin: 20px auto;
 
         li {
-            background-color: #f2f2f2;
+            color: #fff;
+            position: relative;
+            background-color: #d6d6d6;
             border-radius: 4px;
-            padding: 8px;
+            padding: 5px 8px;
             margin-bottom: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 0;
+            border-radius: 4px;
+            background-color: #d6d6d6;
+        }
+
+        .file-info {
+            position: relative;
+            z-index: 1;
         }
     }
 </style>

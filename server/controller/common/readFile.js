@@ -1,4 +1,5 @@
 import XLSX from 'xlsx';
+import _ from 'lodash';
 import { strToUnderscored, objFormat } from '../../lib/utils/uitls';
 
 /**
@@ -6,7 +7,7 @@ import { strToUnderscored, objFormat } from '../../lib/utils/uitls';
  * @param {File} file
  * @param {Object}
  */
-export function readFile(file) {
+export default function readFile(file) {
     const wb = XLSX.readFile(file);
 
     wb.SheetNames.forEach((name) => {
@@ -66,7 +67,6 @@ export function readFile(file) {
             };
         }).value();
 
-        // console.log('--- Excel Data ---', data);
         return data;
     });
 };
