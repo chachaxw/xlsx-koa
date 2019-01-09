@@ -26,7 +26,6 @@ export function strToUnderscored(str) {
  * @param {Object} obj
  * @param {Object}
  */
-
 export function objFormat(obj) {
     return {
         id: _.get(obj, 'id'),

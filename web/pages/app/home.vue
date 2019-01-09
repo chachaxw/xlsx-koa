@@ -3,7 +3,6 @@
         <div class="container">
             <div class="text-center page-header">
                 <h1 class="xlsx-koa">xlsx-koa</h1>
-                <p>vue koa 应用</p>
             </div>
             <div class="upload">
                 <file-upload
@@ -24,7 +23,7 @@
             </div>
             <ul class="file-list">
                 <li v-for="file in files">
-                    {{file.name}} - Error: {{file.error}}, Success: {{file.success}}
+                    {{file.name}} - {{file.error && `Error: ${file.error}`}}, Success: {{file.success}}
                 </li>
             </ul>
         </div>
@@ -46,6 +45,7 @@
                 maximum: 10,
                 minSize: 1024,
                 multiple: true,
+                uploadAuto: true,
                 size: 1024 * 1024 * 10,
                 accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             };
@@ -96,9 +96,6 @@
                         this.$refs.upload.active = true;
                     }
                 }
-
-                console.log('Upload File', newFile);
-                this.$refs.upload.active = true;
             },
             /**
              * Pretreatment
