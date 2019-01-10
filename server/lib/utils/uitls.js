@@ -12,7 +12,7 @@ export function isEmptyArray(array) {
 /**
  * 字符串转换为下划线连接
  * @param {String} str
- * @param {String}
+ * @return {String}
  */
 export function strToUnderscored(str) {
     const reg = /[(|)]|\//g;
@@ -24,7 +24,7 @@ export function strToUnderscored(str) {
 /**
  * 对象转换
  * @param {Object} obj
- * @param {Object}
+ * @return {Object}
  */
 export function objFormat(obj) {
     return {

@@ -53,7 +53,7 @@
                 minSize: 1024,
                 multiple: true,
                 uploadAuto: true,
-                size: 1024 * 1024 * 10,
+                size: 1024 * 1024 * 100,
                 accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             };
         },
@@ -126,6 +126,11 @@
                 if (URL && URL.createObjectURL) {
                     newFile.blob = URL.createObjectURL(newFile.file);
                 }
+            }
+        },
+        watch: {
+            'files': (newVal, oldVal) => {
+                // console.log(newVal, oldVal);
             }
         },
         components:{

@@ -15,18 +15,26 @@ const pageHome = async (ctx) => {
 };
 
 const uploadFile = async (ctx) => {
+    let files = [];
     const form = new IncomingForm({
         multiples: true,
         keepExtensions: true,
-        maxFileSize: 10 * 1024 * 1024,
+        maxFileSize: 100 * 1024 * 1024,
         uploadDir: path.resolve(__dirname, '../../public/temp'),
     });
 
+    form.on('file', (file) => {
+        files.push[file];
+    });
+
     form.parse(ctx.req, (err, fields, files) => {
-        console.log('Files', fields, files);
+        console.log('Files', fields, files.file.path);
         if (err) {
             ctx.throw(400, err);
         }
+        const data = readFile(files.file.path);
+        console.log('Excel data', data);
+        createProduct(ctx);
     });
 
     ctx.status = 200;

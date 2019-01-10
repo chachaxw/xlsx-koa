@@ -2,7 +2,7 @@
 locales: []
 
 # 是否使用模拟数据api(prod模式无效)
-isMockAPI : true
+isMockAPI : false
 
 # development 开发模式
 # production 生产模式

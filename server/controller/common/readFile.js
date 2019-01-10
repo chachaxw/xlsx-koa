@@ -5,9 +5,10 @@ import { strToUnderscored, objFormat } from '../../lib/utils/uitls';
 /**
  * 读取 Excel 文件
  * @param {File} file
- * @param {Object}
+ * @return {Array}
  */
 export default function readFile(file) {
+    let data = [];
     const wb = XLSX.readFile(file);
 
     wb.SheetNames.forEach((name) => {
@@ -42,7 +43,7 @@ export default function readFile(file) {
             return objFormat(item);
         });
 
-        const data = _.chain(rows).groupBy('handle').toPairs().map(o => {
+        data = _.chain(rows).groupBy('handle').toPairs().map(o => {
             return _.zipObject(_.zip(['handle', 'specs']), o);
         }).map(item => {
             const obj = item.specs[0];
@@ -67,6 +68,7 @@ export default function readFile(file) {
             };
         }).value();
 
-        return data;
     });
+
+    return data;
 };
