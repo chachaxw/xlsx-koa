@@ -54,8 +54,9 @@ const appendFileForDev = (ctx, url) => {
     //dist可能存在css,但当前app的css就不加载了,避免冲突
     else if (url.indexOf('.css') > -1 && appName !== fileName && manifest) {
         let cssUrl = manifest[url];
+
         if (cssUrl) {
-            return `<link href="${cssUrl}" type="text/css" rel="stylesheet"/>`
+            return `<link href="${cssUrl}" type="text/css" rel="stylesheet"/>`;
         }
     }
 };

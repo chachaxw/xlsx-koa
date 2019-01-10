@@ -1,11 +1,11 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
-const config = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '../../config.yml')));
 const isEmpty = require('lodash/isEmpty');
 const axios = require('./vendor/axios');
 const logger = require('./vendor/log4js');
 const webpackEntryConf = require(path.resolve('./webapck.entry.conf'));
+const config = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '../../config.yml')));
 
 /**
  * 基础上下文配置(静态)
@@ -48,7 +48,6 @@ function appContextConfig(app) {
 
     delete appConfig['development'];
     delete appConfig['production'];
-
 
     for (let item in appConfig) {
         app.context[item] = appConfig[item];

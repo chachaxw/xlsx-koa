@@ -1,7 +1,7 @@
-export function createProduct(ctx) {
+export function createProduct(ctx, data) {
     return ctx.axios(ctx, {
-        url: '/interface/product-create/index', 
-        method: 'post'
+        url: 'http://pdm.hqygou.com/interface/product-create/index', 
+        method: 'post',
+        data: {...data},
     });
-};
-
+}

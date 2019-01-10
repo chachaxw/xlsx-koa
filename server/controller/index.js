@@ -33,8 +33,8 @@ const uploadFile = async (ctx) => {
             ctx.throw(400, err);
         }
         const data = readFile(files.file.path);
-        console.log('Excel data', data);
-        createProduct(ctx);
+        console.log('Excel data', data[0]);
+        createProduct(ctx, data[0]);
     });
 
     ctx.status = 200;
