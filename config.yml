@@ -9,14 +9,14 @@ isMockAPI : false
 # port server端口
 # apiServer api服务器 如果isMockAPI
 development:
-    apiServer : 'http://localhost:3031'
+    apiServer : 'http://pdm.hqygou.com'
     port: 3030
     #redisStore :
     #   "host": '127.0.0.1'
     #   "port": '6379'
 
 production:
-    apiServer : 'http://localhost:3031'
+    apiServer : 'http://pdm.gw-ec.com'
     port: 3030
     #redisStore :
     #   "host": '127.0.0.1'

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import md5 from 'md5';
 import { IncomingForm } from 'formidable';
 import readFile from './common/readFile';
 import { createProduct } from '../api/index';
@@ -16,11 +17,19 @@ const pageHome = async (ctx) => {
 
 const uploadFile = async (ctx) => {
     let files = [];
+    const uploadDir = path.resolve(__dirname, '../../public/temp');
+
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(path.resolve(__dirname, '../../public/temp'), (err) => {
+            if (err) throw err;
+        });
+    }
+
     const form = new IncomingForm({
         multiples: true,
         keepExtensions: true,
         maxFileSize: 100 * 1024 * 1024,
-        uploadDir: path.resolve(__dirname, '../../public/temp'),
+        uploadDir,
     });
 
     form.on('file', (file) => {
@@ -28,13 +37,26 @@ const uploadFile = async (ctx) => {
     });
 
     form.parse(ctx.req, (err, fields, files) => {
-        console.log('Files', fields, files.file.path);
+
         if (err) {
             ctx.throw(400, err);
         }
+
         const data = readFile(files.file.path);
-        console.log('Excel data', data[0]);
-        createProduct(ctx, data[0]);
+
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(item => {
+                const key = 'fe74b137e9e0ee3a00ddea36c89c59df';
+                const md5Data = md5(key + JSON.stringify(item));
+                const md5Key = md5(item.from_platform + md5Data);
+
+                console.log('MD5 Key', md5Key);
+                createProduct(ctx, {
+                    key: md5Key,
+                    data: item
+                });
+            });
+        }
     });
 
     ctx.status = 200;

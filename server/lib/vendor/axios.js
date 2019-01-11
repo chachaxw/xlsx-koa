@@ -6,7 +6,7 @@ const axios = require('axios');
  */
 module.exports.default = module.exports = async (ctx, options) => {
     let url = options.url;
-    //读mock数据
+    // 请求mock数据
     if (ctx.env === 'development' && ctx.isMockAPI) {
         let mockFilePath = `./server/mock${url}.json`;
         let existsMockFilePath = await fs.existsSync(mockFilePath);
@@ -21,21 +21,25 @@ module.exports.default = module.exports = async (ctx, options) => {
                 error: 'no file'
             }
         }
-    }
-    //请求url
-    else {
+    } else {  // 请求url
         options.url = ctx.apiServer + options.url;
-        options.headers = {'content-type': 'application/json;charset=utf-8'};
-        return await axios(options).then(function (res) {
+        options.headers = {
+            'content-type': 'application/json;charset=utf-8'
+        };
+
+        return await axios(options).then((res) => {
             showInfo(ctx, 'info', res, {
                 response: res.data
             });
             return res.data;
-        }).catch(function (res) {
+        }).catch((res) => {
             showInfo(ctx, 'error', res, {
-                response: res.response.data
+                response: res.response
             });
-            return {status: res.response.status, error: res.response.data};
+            return {
+                status: res.response,
+                error: res.response
+            };
         });
     }
 };
