@@ -1,6 +1,6 @@
 import XLSX from 'xlsx';
 import _ from 'lodash';
-import { strToUnderscored, objFormat } from '../../lib/utils/uitls';
+import { strToUnderscored, objFormat, specFormat } from '../../lib/utils/utils';
 
 /**
  * 读取 Excel 文件
@@ -47,6 +47,11 @@ export default function readFile(file) {
             return _.zipObject(_.zip(['handle', 'specs']), o);
         }).map(item => {
             const obj = item.specs[0];
+
+            if (Array.isArray(item.specs) && item.specs.length > 0) {
+                item.specs = item.specs.map(item => specFormat(item));
+            }
+
             return {
                 declare_name_cn: _.get(obj, 'title'),
                 declare_name_en: _.get(obj, 'product_name_en'),
@@ -71,4 +76,4 @@ export default function readFile(file) {
     });
 
     return data;
-};
+}

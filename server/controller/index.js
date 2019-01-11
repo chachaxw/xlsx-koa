@@ -50,7 +50,8 @@ const uploadFile = async (ctx) => {
                 const md5Data = md5(key + JSON.stringify(item));
                 const md5Key = md5(item.from_platform + md5Data);
 
-                console.log('MD5 Key', md5Key);
+                // console.log('MD5 Key', md5Key);
+
                 createProduct(ctx, {
                     key: md5Key,
                     data: item
