@@ -30,7 +30,7 @@ export function objFormat(obj) {
     return {
         id: _.get(obj, 'id'),
         handle: _.get(obj, 'handle'),
-        declare_name_cn: _.get(obj, 'title'),
+        declare_name_cn: _.get(obj, 'title', '默认标题'),
         declare_name_en: _.get(obj, 'product_name_en'),
         feature: _.get(obj, 'body_html'),
         character_ids: _.get(obj, 'character_ids'),

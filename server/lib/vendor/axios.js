@@ -24,7 +24,7 @@ module.exports.default = module.exports = async (ctx, options) => {
     } else {  // 请求url
         options.url = ctx.apiServer + options.url;
         options.headers = {
-            'content-type': 'application/json;charset=utf-8'
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         };
 
         return await axios(options).then((res) => {

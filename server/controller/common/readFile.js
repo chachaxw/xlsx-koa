@@ -53,7 +53,7 @@ export default function readFile(file) {
             }
 
             return {
-                declare_name_cn: _.get(obj, 'title'),
+                declare_name_cn: _.get(obj, 'declare_name_cn'),
                 declare_name_en: _.get(obj, 'product_name_en'),
                 feature: _.get(obj, 'feature'),
                 character_ids: _.get(obj, 'character_ids'),

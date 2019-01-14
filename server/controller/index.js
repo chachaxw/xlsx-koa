@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import md5 from 'md5';
+import qs from 'qs';
 import { IncomingForm } from 'formidable';
 import readFile from './common/readFile';
 import { createProduct } from '../api/index';
@@ -51,12 +52,12 @@ const uploadFile = async (ctx) => {
                 const md5Data = md5(key + JSON.stringify(item));
                 const md5Key = md5(item.from_platform + md5Data);
 
-                console.log('MD5 Key', md5Key);
-
-                createProduct(ctx, {
+                const data = qs.stringify({
                     key: md5Key,
-                    data: item
+                    data: JSON.stringify(item),
                 });
+
+                createProduct(ctx, data);
             });
         }
     });
