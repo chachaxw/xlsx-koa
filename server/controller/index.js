@@ -4,6 +4,7 @@ import md5 from 'md5';
 import { IncomingForm } from 'formidable';
 import readFile from './common/readFile';
 import { createProduct } from '../api/index';
+import MockData from '../mock/data.json';
 
 const pageHome = async (ctx) => {
     const locals = {
@@ -50,7 +51,7 @@ const uploadFile = async (ctx) => {
                 const md5Data = md5(key + JSON.stringify(item));
                 const md5Key = md5(item.from_platform + md5Data);
 
-                // console.log('MD5 Key', md5Key);
+                console.log('MD5 Key', md5Key);
 
                 createProduct(ctx, {
                     key: md5Key,
@@ -67,7 +68,19 @@ const uploadFile = async (ctx) => {
     };
 };
 
+const testApi = async (ctx) => {
+
+    console.log(ctx.request.body);
+
+    ctx.status = 200;
+    ctx.body = {
+        status: 200,
+        errMsg: 'Ok',
+    };
+};
+
 module.exports.default = module.exports = {
     pageHome,
     uploadFile,
+    testApi,
 };

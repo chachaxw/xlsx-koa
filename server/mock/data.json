@@ -139,7 +139,7 @@
       }
   ],
   "has_chinese" : 0,
-  "from_platform" : "BF",
+  "from_platform" : "SHOPIFY",
   "method" : "manage.Product.Add",
   "charger_spec" : 1,
   "product_source" : 7,

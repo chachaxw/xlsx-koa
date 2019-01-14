@@ -50,10 +50,10 @@ function showInfo(ctx, type, res, option) {
         method: res.request.method
     };
     let options = JSON.stringify(Object.assign({}, defaults, option));
+
     if (type === 'info') {
         ctx.logger.info(options);
-    }
-    else if (type === 'error') {
+    } else if (type === 'error') {
         ctx.logger.error(options);
     }
 }

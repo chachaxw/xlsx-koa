@@ -283,7 +283,7 @@ entry: {
 module.exports ={
     ...
     new ManifestPlugin({
-        publicPath: 'http://localhost:3333/app'
+        publicPath: 'http://localhost:3030/app'
     })
     ...
 };
@@ -379,9 +379,9 @@ data() {
 
 路由则支持
 
-* http://localhost:3333/
-* http://localhost:3333/zh/
-* http://localhost:3333/en/
+* http://localhost:3030/
+* http://localhost:3030/zh/
+* http://localhost:3030/en/
 
 ## mock
 
@@ -392,7 +392,7 @@ data() {
 # 是否使用模拟数据api(dev模式有效)
 isMockAPI : true
 # apiServer api服务器
-apiServer : 'http://localhost:3334'
+apiServer : 'http://localhost:3030'
 ...
 ```
 
@@ -422,7 +422,7 @@ apiServer : 'http://localhost:3334'
 
 `isMockAPI:false`
 
-服务端返回 `http://localhost:3334/api/list`.
+服务端返回 `http://localhost:3030/api/list`.
 
 ### 2.前端Mock
 
@@ -438,8 +438,7 @@ Mock.mock('/api/list', 'post', function () {
             'name': '@cname',
             'imageUrl': 'https://placeholdit.imgix.net/~text?txtsize=50&bg=323232&txtclr=ffffff&txt=150%C3%97300&w=300&h=150',
             'description': '@cname'
-        }
-        ]
+        }]
     });
 });
 
