@@ -1,9 +1,7 @@
 <template>
     <div id="home-app">
-        <div class="container">
-            <div class="text-center page-header">
-                <h1 class="xlsx-koa">xlsx-koa</h1>
-            </div>
+        <div class="page-header">XLSX-KOA</div>
+        <div class="container-fluid">
             <div class="upload">
                 <file-upload
                     :drop="true"
@@ -140,18 +138,35 @@
     }
 </script>
 <style lang="scss" scoped>
-    .page-header {
-        margin: 80px 0 20px;
+
+    #home-app {
+        height: 100%;
     }
 
-    .xlsx-koa {
-        font-size: 50px;
-        height: 76px;
-        line-height: 76px;
+    .page-header {
         text-align: center;
+        font-size: 18px;
+        margin: 0;
+        height: 64px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        box-shadow: 1px 5px 40px rgba(0, 0, 0, .08);
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding: 0;
+        position: relative;
+        height: calc(100% - 74px);
     }
 
     .upload {
+        position: absolute;
+        top: 200px;
+        left: 50%;
         display: flex;
         flex-direction: column;
         width: 50%;
@@ -161,6 +176,7 @@
         align-items: center;
         justify-content: center;
         border: 2px dashed #dddddd;
+        transform: translateX(-50%);
 
         &.drop-active {
             border-color: rgb(41, 154, 230);
