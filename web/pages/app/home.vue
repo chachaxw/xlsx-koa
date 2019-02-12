@@ -22,7 +22,7 @@
                 </file-upload>
             </div>
             <ul class="file-list">
-                <li v-for="file in files">
+                <li v-for="(file, idx) in files" :key="idx">
                     <div class="progress" :style="{
                         width: file.progress + '%',
                         backgroundColor: file.success ? '#1b94f7' : '#FF3B30',
@@ -56,6 +56,10 @@
                 size: 1024 * 1024 * 100,
                 accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             };
+        },
+        components:{
+            backToTop,
+            FileUpload,
         },
         methods: {
             /**
@@ -133,10 +137,6 @@
                 // console.log(newVal, oldVal);
             }
         },
-        components:{
-            backToTop,
-            FileUpload,
-        }
     }
 </script>
 <style lang="scss" scoped>
