@@ -60,13 +60,13 @@ export function objFormat(obj) {
         size_chart_template_id: _.get(obj, 'size_chart_template_id'),
         standard_size_chart_id: _.get(obj, 'standard_size_chart_id'),
         has_chinese: _.get(obj, 'has_chinese', 0),
-        from_platform: _.get(obj, 'from_platform', ''),
+        from_platform: _.get(obj, 'from_platform', 'SHOPIFY'),
         method: _.get(obj, 'method', ''),
         charger_spec: _.get(obj, 'charger_spec', 1),
         product_source: _.get(obj, 'product_source', 0),
         product_label: _.get(obj, 'product_label', ''),
         recommend_level: _.get(obj, 'recommend_level', 'o'),
-        supplier_sn: _.get(obj, 'supplier_sn', ''),
+        supplier_sn: _.get(obj, 'supplier_sn', 'DZK0001'),
     };
 }
 
