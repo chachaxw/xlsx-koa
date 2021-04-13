@@ -15,7 +15,7 @@
     "formidable": "^1.2.1",
     "handlebars": "^4.5.3",
     "handlebars-layouts": "^3.1.4",
-    "js-yaml": "^3.12.2",
+    "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-convert": "^1.2.0",
