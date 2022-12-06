@@ -34,7 +34,7 @@
     "minireset.css": "0.0.4",
     "ppteditor-vue": "^1.1.9",
     "promise-polyfill": "^8.1.0",
-    "qs": "^6.6.0",
+    "qs": "^6.6.1",
     "time-fix-plugin": "^2.0.3",
     "vue": "^2.6.8",
     "vue-upload-component": "^2.8.19",
